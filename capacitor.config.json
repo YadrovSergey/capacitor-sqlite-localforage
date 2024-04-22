@@ -1,0 +1,14 @@
+{
+  "appId": "capacitor.sqlite.localforage",
+  "appName": "capacitor-sqlite-localforage",
+  "bundledWebRuntime": false,
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

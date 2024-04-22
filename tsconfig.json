@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "isolatedModules": true,
+    "noEmit": true,
+    "types" : [
+      "localforage", "jasmine"
+    ],
+    "lib": ["ES2015", "es2015.promise", "dom"]
+  },
+  "include": [
+    "./src"
+  ]
+}
