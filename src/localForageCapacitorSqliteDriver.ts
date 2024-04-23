@@ -107,7 +107,11 @@ class CapacitorSqlStore {
             });
             console.log(`sqlite: create connection ${this.databaseName}`);
         } catch (error) {
-            console.error(error);
+            if (error && error.message.indexOf(`Connection ${this.databaseName} already exists`) > 0) {
+                console.log(error);
+            } else {
+                console.error(error);
+            }
         }
 
         try {
