@@ -22,33 +22,58 @@ import {
     ready,
 } from "localforage";
 import { localForageMemoryDriver } from "./localForageMemoryDriver";
+import { localForageCapacitorSqliteDriver } from "./localForageCapacitorSqliteDriver";
 const driverApiMethods = ["getItem", "setItem", "clear", "length", "removeItem", "key", "keys"];
-// import cordovaSQLiteDriver from "./localForageSqliteDriver";
 
-describe("localForageSqliteDriver", function () {
+//@ts-ignore
+import sqliteUrl from "./assets/sql-wasm.wasm?url";
+import { CapacitorSQLite } from "@capacitor-community/sqlite";
+import { Capacitor } from "@capacitor/core";
+if (sqliteUrl) {
+    //this need for vite
+    console.info("sql wasm load");
+}
+
+const localForageCapacitorSqliteDriverDefault = localForageCapacitorSqliteDriver({
+    type: "default",
+});
+
+const localForageCapacitorSqliteDriverOneDataBase = localForageCapacitorSqliteDriver({
+    type: "inOneDatabase",
+    databaseName: "localForageCapacitorSqlite",
+});
+
+describe("drivers", function () {
     beforeAll(async () => {
+        if (!Capacitor.isNativePlatform()) {
+            await CapacitorSQLite.initWebStore();
+        }
         await defineDriver(localForageMemoryDriver);
+        await defineDriver(localForageCapacitorSqliteDriverDefault);
+        await defineDriver(localForageCapacitorSqliteDriverOneDataBase);
     });
-    // it("should work", async function () {
-    //     const x = createInstance({
-    //         name: "test",
-    //         driver: localForageMemoryDriver._driver,
-    //     });
-    //
-    //     const x2 = createInstance({
-    //         name: "test1",
-    //         driver: localForageMemoryDriver._driver,
-    //     });
-    //
-    //     await x.setItem("test", "test222");
-    //     await x2.setItem("test", "test222");
-    //     //
-    //     expect(await x.getItem("test")).toBe("test222");
-    // });
-    //https://github.com/localForage/localForage/blob/master/test/test.api.js
-    [localForageMemoryDriver._driver].forEach((driverName) => {
+
+    [
+        localForageMemoryDriver._driver,
+        localForageCapacitorSqliteDriverDefault._driver,
+        localForageCapacitorSqliteDriverOneDataBase._driver,
+    ].forEach((driverName) => {
         describe(`driver ${driverName}`, () => {
             beforeAll(async () => {
+                if (Capacitor.getPlatform() != "web") {
+                    /**
+                     * Для web данный код ломает работу
+                     */
+                    // when using Capacitor, you might want to close existing connections,
+                    // otherwise new connections will fail when using dev-live-reload
+                    // see https://github.com/capacitor-community/sqlite/issues/106
+                    CapacitorSQLite.checkConnectionsConsistency({
+                        dbNames: [],
+                        openModes: [],
+                    })
+                        .then((result) => console.log(result))
+                        .catch((e) => console.log(e));
+                }
                 await setDriver(driverName);
             });
 
@@ -105,6 +130,7 @@ describe("localForageSqliteDriver", function () {
             it("setItem and getItem should work", async () => {
                 const testKey: string = `test-${new Date().getTime()}`;
                 const testValue = 1;
+
                 expect(await setItem(testKey, testValue)).toBe(testValue);
                 expect(await getItem(testKey)).toBe(testValue);
             });
@@ -123,7 +149,7 @@ describe("localForageSqliteDriver", function () {
                                 expect(value).toBe(setValue);
 
                                 const accumulator: Record<string, any> = {};
-                                const iterationNumbers: any[] = [];
+                                const iterationNumbers: number[] = [];
 
                                 iterate(
                                     function (value, key, iterationNumber) {
@@ -131,14 +157,10 @@ describe("localForageSqliteDriver", function () {
                                         iterationNumbers.push(iterationNumber);
                                     },
                                     function () {
-                                        try {
-                                            expect(accumulator.officeX).toBe("InitechX");
-                                            expect(accumulator.officeY).toBe("InitechY");
-                                            expect(iterationNumbers).toEqual([1, 2]);
-                                            done();
-                                        } catch (e) {
-                                            done();
-                                        }
+                                        expect(accumulator.officeX).toBe("InitechX");
+                                        expect(accumulator.officeY).toBe("InitechY");
+                                        expect(iterationNumbers).toEqual([1, 2]);
+                                        done();
                                     },
                                 );
                             });
@@ -605,7 +627,6 @@ describe("localForageSqliteDriver", function () {
                     })
                     .then(function (value) {
                         expect(value).toBe("goodness!");
-
                         return removeItem(undefined);
                     })
                     .then(function () {
@@ -683,16 +704,6 @@ describe("localForageSqliteDriver", function () {
                 });
             });
 
-            //todo
-            // if (driverName === localforage.WEBSQL || driverName === localforage.LOCALSTORAGE) {
-            //     it("exposes the serializer on the dbInfo object", function (done) {
-            //         localforage.ready().then(function () {
-            //             expect(localforage._dbInfo.serializer).toBe.an("object");
-            //             done();
-            //         });
-            //     });
-            // }
-
             function prepareStorage(storageName) {
                 // Delete IndexedDB storages (start from scratch)
                 // Refers to issue #492 - https://github.com/mozilla/localForage/issues/492
@@ -753,6 +764,12 @@ describe("localForageSqliteDriver", function () {
                         done();
                     });
                 });
+
+                // it("", async () => {
+                //     await localforage2.getItem("key2", "value2a");
+                //     await localforage3.getItem("key3", "value3a");
+                //     await getItem("key3", "value3a");
+                // });
 
                 it("is not be able to access values of other instances", function (done) {
                     Promise.all([
@@ -880,7 +897,7 @@ describe("localForageSqliteDriver", function () {
                     return Promise.all([promise1, promise2, promise3]);
                 });
 
-                it("can create multiple instances of the same store", function () {
+                it("can create multiple instances of the same store", function (done) {
                     let localforage1: LocalForage;
                     let localforage2: LocalForage;
                     let localforage3: LocalForage;
@@ -942,10 +959,11 @@ describe("localForageSqliteDriver", function () {
                                             expect(value).toBe("value3");
                                         });
                                 });
-                        });
+                        })
+                        .then(done);
                 });
 
-                it("can create multiple instances of the same store and do concurrent operations", function () {
+                it("can create multiple instances of the same store and do concurrent operations", function (done) {
                     let localforage1: LocalForage;
                     let localforage2: LocalForage;
                     let localforage3: LocalForage;
@@ -1022,6 +1040,9 @@ describe("localForageSqliteDriver", function () {
                                 });
 
                             return Promise.all([promise1, promise2, promise3, promise4]);
+                        })
+                        .then(() => {
+                            done();
                         });
                 });
 

@@ -5,9 +5,14 @@
     "types" : [
       "localforage", "jasmine"
     ],
-    "lib": ["ES2015", "es2015.promise", "dom"]
+    "lib": ["es2015", "es2015.promise", "dom"],
+    "skipLibCheck": true
   },
   "include": [
     "./src"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
   ]
 }

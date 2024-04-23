@@ -1,14 +1,35 @@
 {
-  "appId": "capacitor.sqlite.localforage",
-  "appName": "capacitor-sqlite-localforage",
+  "appId": "capacitor.app",
+  "appName": "capacitor-app",
   "bundledWebRuntime": false,
   "webDir": "dist",
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 0
+    },
+    "CapacitorSQLite": {
+      "iosDatabaseLocation": "Library/CapacitorDatabase",
+      "iosIsEncryption": false,
+      "iosKeychainPrefix": "ionic7-react-sqlite-app",
+      "iosBiometric": {
+        "biometricAuth": false,
+        "biometricTitle": "Biometric login for capacitor sqlite"
+      },
+      "androidIsEncryption": false,
+      "androidBiometric": {
+        "biometricAuth": false,
+        "biometricTitle": "Biometric login for capacitor sqlite",
+        "biometricSubTitle": "Log in using your biometric"
+      },
+      "electronIsEncryption": false,
+      "electronWindowsLocation": "C:\\ProgramData\\CapacitorDatabases",
+      "electronMacLocation": "/Volumes/Development_Lacie/Development/Databases",
+      "electronLinuxLocation": "Databases"
     }
   },
   "server": {
-    "androidScheme": "https"
+    "androidScheme": "https",
+    "off_url": "http://192.168.0.103:4173/",
+    "off__cleartext": true
   }
 }

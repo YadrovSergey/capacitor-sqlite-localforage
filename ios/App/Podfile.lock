@@ -1,0 +1,55 @@
+PODS:
+  - Capacitor (5.7.5):
+    - CapacitorCordova
+  - CapacitorCamera (5.0.9):
+    - Capacitor
+  - CapacitorCommunitySqlite (5.7.2):
+    - Capacitor
+    - SQLCipher
+    - ZIPFoundation
+  - CapacitorCordova (5.7.5)
+  - CapacitorSplashScreen (5.0.7):
+    - Capacitor
+  - SQLCipher (4.5.6):
+    - SQLCipher/standard (= 4.5.6)
+  - SQLCipher/common (4.5.6)
+  - SQLCipher/standard (4.5.6):
+    - SQLCipher/common
+  - ZIPFoundation (0.9.19)
+
+DEPENDENCIES:
+  - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorCamera (from `../../node_modules/@capacitor/camera`)"
+  - "CapacitorCommunitySqlite (from `../../node_modules/@capacitor-community/sqlite`)"
+  - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
+
+SPEC REPOS:
+  trunk:
+    - SQLCipher
+    - ZIPFoundation
+
+EXTERNAL SOURCES:
+  Capacitor:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorCamera:
+    :path: "../../node_modules/@capacitor/camera"
+  CapacitorCommunitySqlite:
+    :path: "../../node_modules/@capacitor-community/sqlite"
+  CapacitorCordova:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorSplashScreen:
+    :path: "../../node_modules/@capacitor/splash-screen"
+
+SPEC CHECKSUMS:
+  Capacitor: 7d42085cb786b2d3ea9ac8a17ebd7e3305be7b72
+  CapacitorCamera: 4892c5c392f60039d853dde78bc50ba19fbd113e
+  CapacitorCommunitySqlite: e2e42bdeea8daba9c4712113ab2840133b1679d1
+  CapacitorCordova: c946a6052b547e1e185fc46862003f7b9130ead1
+  CapacitorSplashScreen: dd3de3f3644710fa2a697cfb91ec262eece4d242
+  SQLCipher: 838309284f29953a28ad2e81d87d55ea6b7c74fd
+  ZIPFoundation: b8c29ea7ae353b309bc810586181fd073cb3312c
+
+PODFILE CHECKSUM: aa1bd7fb618b82946c41e4222b3e46708f0c858f
+
+COCOAPODS: 1.15.0

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">capacitor-sqlite-localforage</string>
+    <string name="title_activity_main">capacitor-sqlite-localforage</string>
+    <string name="package_name">capacitor.sqlite.localforage</string>
+    <string name="custom_url_scheme">capacitor.sqlite.localforage</string>
+</resources>

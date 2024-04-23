@@ -13,6 +13,10 @@
     <link rel="shortcut icon" type="image/png" href="./lib/jasmine-5.1.2/jasmine_favicon.png">
     <link rel="stylesheet" href="./lib/jasmine-5.1.2/jasmine.css">
 
+
+    <!--Необходимо для тестирования в браузере capacitor sqlite-->
+    <script src="https://cdn.jsdelivr.net/npm/jeep-sqlite@latest/dist/jeep-sqlite/jeep-sqlite.esm.js" type="module"></script>
+
     <script src="./lib/jasmine-5.1.2/jasmine.js"  type="module"></script>
     <script src="./lib/jasmine-5.1.2/jasmine-html.js"  type="module"></script>
     <script src="./lib/jasmine-5.1.2/boot0.js" type="module"></script>
@@ -20,13 +24,13 @@
     <script src="./lib/jasmine-5.1.2/boot1.js"  type="module"></script>
 
     <!-- include source files here... -->
-    <!--    <script src="./localForageSqliteDriver.js"  type="module"></script>-->
+    <script src="./localForageCapacitorSqliteDriver.ts" type="module"></script>
     <script src="./localForageMemoryDriver.ts"  type="module"></script>
 
     <!-- include spec files here... -->
     <script src="./localForageDriverSpec.ts"  type="module"></script>
   </head>
-  <body>
-
+  <body style="margin-top: 75px">
+    <jeep-sqlite></jeep-sqlite>
   </body>
 </html>
